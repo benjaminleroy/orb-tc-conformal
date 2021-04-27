@@ -1,0 +1,119 @@
+---
+title: "Understanding ORB functions"
+output: html_document
+---
+
+```{r warning =F, message=F, echo = F}
+library(tidyverse)
+library(plotly)
+```
+
+```{r message = F, echo = F}
+tc_rad <- read_csv("../data/size_and_radial_prof-selected/AL122005_rad.csv",skip = 1)
+tc_rad <- tc_rad[-1,]
+names(tc_rad)[1] <- "time"
+names(tc_rad)[-1] <- paste0("RAD",as.numeric(names(tc_rad)[-1]))
+```
+
+# EDA
+
+Some 1/2 hour segments have `NA`s for all values (how did he handle them?)
+Also some don't have all `NA`s - which is interesting...
+Finally, some of the final rows are all `NA`s.
+
+```{r}
+tc_rad %>% is.na %>% apply(1, sum)
+
+# interestingly some don't completely have all NAs...
+some_na <- tc_rad %>% is.na %>% apply(1, sum) %>% sapply(function(v) v> 0)
+na_grouping <- some_na %>% cumsum()
+na_grouping %>% table # let's look at 9
+```
+
+## Visual:
+
+This visual is a the 9th segment (relative to `NA`s) - and is not the overall full time span of the hurricane.
+
+```{r, echo = F}
+selected_sequence <- tc_rad[na_grouping == 9,][-1, ]
+
+data <- selected_sequence 
+
+visualize_orb <- function(data, time_col_str = "time", title = ""){
+ 
+  data_long <- data %>% pivot_longer(cols = -one_of(time_col_str),
+                                     names_to = "RAD",
+                                     values_to = "ORB_val") %>%
+    mutate(RAD = as.numeric(stringr::str_extract(RAD,pattern = "[0-9]+"))) %>% 
+    mutate(across(time_col_str, function(cval) cval %>% 
+    stringr::str_extract("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}"))) %>%
+    mutate(across(time_col_str, as.POSIXct))
+  
+  vis_2d <- data_long %>%
+    ggplot(aes(y = RAD, fill = ORB_val)) +
+    geom_tile(aes_string(x = time_col_str)) +
+    labs(x = "time", y = "RAD", fill = "ORB",
+         title = title) +
+    theme_minimal()
+  
+  data_mat <- data %>% select(-one_of(time_col_str)) %>% as.matrix()
+  rownames(data_mat) <- data %>% as.data.frame %>% .[,time_col_str] %>% 
+    stringr::str_extract("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}")
+  
+  fig <- plot_ly(y = rownames(data_mat),
+                 x = as.numeric(stringr::str_extract(
+                   colnames(data_mat),pattern = "[0-9]+")),
+                 z = ~data_mat) %>% 
+    add_surface(contours = list(
+    y = list(
+      show=TRUE,
+      usecolormap=TRUE,
+      highlightcolor="#ff0000"
+      )
+    )) %>%
+    layout(title = title,
+      scene = list(xaxis = list(title = "RAD"),
+                        yaxis = list(title = "time"),
+                        zaxis = list(title = "ORB"),
+                        camera = list(eye = list(x = 0, 
+                                    y = -1.0, z = 2)))
+           )
+  
+  
+  return(list(vis_2d, fig))
+}
+```
+
+```{r message = F, echo = F}
+vis_out <- visualize_orb(data, title = "Hurricane Katrina (random 1 day)")
+
+vis_out[[1]]
+vis_out[[2]]
+```
+
+
+## Visual 2
+
+Rapid intensity time (August 26-28)
+
+```{r echo = F}
+selected_sequence_info <- tc_rad %>%
+    dplyr::mutate(time = time %>% 
+    stringr::str_extract("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}")) %>%
+    dplyr::mutate(time =  as.POSIXct(time))
+
+correct_dates <- selected_sequence_info$time <= "2005-08-28 24:00" &
+  selected_sequence_info$time >= "2005-08-26 0:00" 
+
+interesting_info <- correct_dates & !some_na
+
+katrina_intense <- tc_rad[interesting_info,]
+```
+
+```{r message = F, echo = F}
+vis_out <- visualize_orb(katrina_intense, 
+                         title = "Hurricane Katrina (2 day intensification)")
+
+vis_out[[1]]
+vis_out[[2]]
+```
