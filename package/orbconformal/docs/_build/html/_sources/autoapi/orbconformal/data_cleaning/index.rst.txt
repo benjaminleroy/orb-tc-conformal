@@ -1,0 +1,38 @@
+:py:mod:`orbconformal.data_cleaning`
+====================================
+
+.. py:module:: orbconformal.data_cleaning
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   orbconformal.data_cleaning.linear_interp
+
+
+
+.. py:function:: linear_interp(mat, na_vec)
+
+   Linear interpolate a matrix's row values.
+
+   :param mat: numpy array (n, p) numeric matrix with rows that need to be
+               interpolated
+   :type mat: numpy.ndarray
+   :param na_vec: boolean numpy vector (n, ) if row should be interpolated (True)
+   :type na_vec: numpy.ndarray
+
+   :returns: updated matrix, with interpolated rows
+   :rtype: numpy.ndarray
+
+   .. rubric:: Notes
+
+   If the beginning or end of the matrix needs to be interpolated this
+   should be done outside this function.
+
+

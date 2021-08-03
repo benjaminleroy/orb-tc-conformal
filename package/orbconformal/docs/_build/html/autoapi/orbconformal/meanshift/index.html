@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>orbconformal.meanshift &mdash; orbconformal  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> orbconformal
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">orbconformal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">orbconformal.meanshift</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/autoapi/orbconformal/meanshift/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-orbconformal.meanshift">
+<span id="orbconformal-meanshift"></span><h1><a class="reference internal" href="#module-orbconformal.meanshift" title="orbconformal.meanshift"><code class="xref py py-mod docutils literal notranslate"><span class="pre">orbconformal.meanshift</span></code></a><a class="headerlink" href="#module-orbconformal.meanshift" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orbconformal.meanshift.meanshift_multidim_funct_single" title="orbconformal.meanshift.meanshift_multidim_funct_single"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meanshift_multidim_funct_single</span></code></a>(X_array, current_obs, sigma, eps, maxT)</p></td>
+<td><p>using guassian kernel meanshift algorithm to shift a single observation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#orbconformal.meanshift.meanshift_multidim_funct" title="orbconformal.meanshift.meanshift_multidim_funct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meanshift_multidim_funct</span></code></a>(X_array, G_array=None, sigma=1, eps=1e-05, maxT=40, parallel=1, verbose=True)</p></td>
+<td><p>using guassian kernel meanshift algorithm to shift a observations</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orbconformal.meanshift.mode_clustering" title="orbconformal.meanshift.mode_clustering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode_clustering</span></code></a>(X_array, sigma, eps=1e-07, maxT=50, diff_eps=1e-07, parallel=1, verbose=True)</p></td>
+<td><p>Find mode clusters of multivariate functional objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#orbconformal.meanshift.mode_clustering_check" title="orbconformal.meanshift.mode_clustering_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode_clustering_check</span></code></a>(X_array, sigma, eps_vec=np.array([1e-07]), maxT=50, diff_eps_vec=np.array([1e-07]), parallel=1, verbose=True)</p></td>
+<td><p>Inner tuning across different values of eps and diff_eps to identify the</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="orbconformal.meanshift.meanshift_multidim_funct_single">
+<span class="sig-prename descclassname"><span class="pre">orbconformal.meanshift.</span></span><span class="sig-name descname"><span class="pre">meanshift_multidim_funct_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxT</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbconformal/meanshift.html#meanshift_multidim_funct_single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbconformal.meanshift.meanshift_multidim_funct_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>using guassian kernel meanshift algorithm to shift a single observation
+to their mode along the kernel pseudo-density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_array</strong> (<em>numpy.ndarray</em>) – numpy array (n, p, q), a set of multivariate functions, rows
+correspond to new observations</p></li>
+<li><p><strong>current_obs</strong> (<em>numpy.ndarray</em>) – numpy array (p, q), single multivariate function to move up to
+a mode</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – scale for guassian kernel pseudo-density</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – positive error bound to declare progression towards the mode complete</p></li>
+<li><p><strong>maxT</strong> (<em>int</em>) – maximum number of steps to take if eps doesn’t stop the
+progression towards the mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>t</strong> (<em>int</em>) – number of interations actually taken</p></li>
+<li><p><strong>current_obs_inner</strong> (<em>numpy.ndarray</em>) – final step taken by the current_obs toward the mode</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="orbconformal.meanshift.meanshift_multidim_funct">
+<span class="sig-prename descclassname"><span class="pre">orbconformal.meanshift.</span></span><span class="sig-name descname"><span class="pre">meanshift_multidim_funct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxT</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbconformal/meanshift.html#meanshift_multidim_funct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbconformal.meanshift.meanshift_multidim_funct" title="Permalink to this definition">¶</a></dt>
+<dd><p>using guassian kernel meanshift algorithm to shift a observations
+to their mode along the kernel pseudo-density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_array</strong> (<em>numpy.ndarray</em>) – numpy array (n, p, q), a set of multivariate functions, rows
+correspond to new observations</p></li>
+<li><p><strong>G_array</strong> (<em>numpy.ndarray</em>) – numpy array (m, p, q), with a set of multivariate function to move
+up to a mode (default is None, which makes it the same as X_array)</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – scale for guassian kernel pseudo-density</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – positive error bound to declare progression towards the mode complete</p></li>
+<li><p><strong>maxT</strong> (<em>int</em><em> or </em><em>numpy.ndarray</em>) – int or vector of integers (m, ), the maximum number of steps to take
+if eps doesn’t stop the progression towards the mode. If this is a
+vector of integers, then this is relative to each row.</p></li>
+<li><p><strong>parallel</strong> (<em>int</em>) – the number of cores to use to parallelize the process (across
+rows of G_array). If parallel = 1, then no paralleization is used. Note
+if this number is greater than the number of cores available it will
+revert to the maximum number of cores.</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – if true then progress is reported with progressbar / output</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>t</strong> (<em>numpy.ndarray</em>) – numpy vector (m, ) of number of interations actually taken for each
+multivariate function in G_array</p></li>
+<li><p><strong>current_obs_inner</strong> (<em>numpy.ndarray</em>) – numpy array (m, p, q) final step taken by the each of the individual
+multivariate fucntions in G_array toward their mode</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="orbconformal.meanshift.mode_clustering">
+<span class="sig-prename descclassname"><span class="pre">orbconformal.meanshift.</span></span><span class="sig-name descname"><span class="pre">mode_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxT</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbconformal/meanshift.html#mode_clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbconformal.meanshift.mode_clustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find mode clusters of multivariate functional objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_array</strong> (<em>numpy.ndarray</em>) – numpy array (r, n, p). Each row has a single representation of a
+multivariate function in it.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – scale value for the distances between observations</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – if difference between steps is less than this - treat as
+if the point has converged</p></li>
+<li><p><strong>maxT</strong> (<em>int</em>) – max number of iterations of the algorithm</p></li>
+<li><p><strong>diff_eps</strong> (<em>float</em>) – if the final step of each of the points is within
+this distance from each-other they will be grouped together.</p></li>
+<li><p><strong>parallel</strong> (<em>boolean</em>) – if we should parallelize the meanshift algorithm part</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – if we should show progress</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>t</strong> (<em>int</em>) – integer of the number of groups there are</p></li>
+<li><p><strong>df</strong> (<em>pandas.core.frame.DataFrame</em>) – DataFrame with indices of X_array’s rows (in column “index”) and a
+grouping index for each observation (in column “group”)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="orbconformal.meanshift.mode_clustering_check">
+<span class="sig-prename descclassname"><span class="pre">orbconformal.meanshift.</span></span><span class="sig-name descname"><span class="pre">mode_clustering_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.array([1e-07])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxT</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_eps_vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.array([1e-07])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbconformal/meanshift.html#mode_clustering_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbconformal.meanshift.mode_clustering_check" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Inner tuning across different values of eps and diff_eps to identify the</dt><dd><p>number of mode clusters for multivariate functional objects</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_array</strong> (<em>numpy.ndarray</em>) – numpy array (r, n, p). Each row has a single representation of a
+multivariate function in it.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – scale value for the distances between observations</p></li>
+<li><p><strong>eps_vec</strong> (<em>numpy.ndarray</em>) – numpy array (e, ) The range of eps values to look across. Where a
+single eps value determines when to stop stepping up the psuedo-density
+if the step before is less than eps away from the current step
+(suggests convergence)</p></li>
+<li><p><strong>maxT</strong> (<em>int</em>) – max number of iterations of the meanshift algorithm</p></li>
+<li><p><strong>diff_eps_vec</strong> (<em>numpy.ndarray</em>) – numpy array (d, ) The range of diff_eps values to look across.
+Where a single diff_eps value determines if the distance between a pair
+of converged points is small enough to suggest they should be in the
+same group</p></li>
+<li><p><strong>parallel</strong> (<em>boolean</em>) – if we should parallelize the meanshift algorithm part</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – if we should show progress</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a matrix (e, d) of integers of the number of mode clusters observed with
+paramters eps_vec[e] and diff_eps_vec[d]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Benjamin LeRoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
