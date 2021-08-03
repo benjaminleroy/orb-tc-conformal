@@ -1,0 +1,59 @@
+name: test & coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pytest-check-and-coverage:
+    runs-on: ${{ matrix.config.os}}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.python-version }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-20.04, python-version: "3.7"}
+          - {os: ubuntu-20.04, python-version: "3.8"}
+          - {os: macos-latest, python-verson: "3.7"}
+          - {os: macos-latest, python-verson: "3.8"}
+          - {os: windows-latest, python-verson: "3.7"}
+          - {os: windows-latest, python-verson: "3.8"}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+      - name: Test with pytest
+        run: |
+          poetry run pytest
+      - name: Save coverage only once
+        if: runner.os == "Linux" & ${{matrix.python-verson == 3.7}}
+        run: |
+           poetry run pytest --cov=package/orbconformal/ --cov-report=xml
+        working-directory: ./package/orbconformal/
+      - name: Send code coverage
+        if: runner.os == "Linux" & ${{matrix.python-verson == 3.6}}
+        uses: codecov/codecov-action@v1
+        with:
+          files: package/orbconformal//coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Wemake Python Styleguide
+        uses: wemake-services/wemake-python-styleguide@0.13.4
+        continue-on-error: true
+        with:
+          reporter: 'github-pr-review'
+

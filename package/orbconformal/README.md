@@ -1,10 +1,14 @@
 # orbconformal 
 
-[![Python](https://img.shields.io/badge/python-3.6-blue)]()
+[![Python](https://img.shields.io/badge/python-3.7-blue)]()
+[![gitactions]()](https://github.com/benjaminleroy/orb-tc-conformal/actions/new)
 [![codecov](https://codecov.io/gh/benjaminleroy/orbconformal/branch/main/graph/badge.svg)](https://codecov.io/gh/benjaminleroy/orbconformal)
+
+<!--
 [![Documentation Status](https://readthedocs.org/projects/orbconformal/badge/?version=latest)](https://orbconformal.readthedocs.io/en/latest/?badge=latest)
+-->
 
-
+<!--
 ## Installation
 
 ```bash
@@ -23,13 +27,16 @@ $ pip install -i https://test.pypi.org/simple/ orbconformal
 
 - TODO
 
+-->
 ## Documentation
 
+<!--
 The official documentation is hosted on Read the Docs: https://orbconformal.readthedocs.io/en/latest/
+-->
 
 ## Contributors
 
-We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/benjaminleroy/orbconformal/graphs/contributors).
+We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/benjaminleroy/orb-tc-conformal//graphs/contributors).
 
 ### Credits
 
