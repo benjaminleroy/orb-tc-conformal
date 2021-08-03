@@ -27,6 +27,7 @@ nbsphinx = "^0.8.6"
 ipykernel = "^6.0.3"
 sphinx-autoapi = "^1.8.3"
 sphinxcontrib-napoleon = "^0.7"
+pytest-cov = "^2.12.1"
 
 
 [build-system]

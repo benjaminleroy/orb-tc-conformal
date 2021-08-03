@@ -38,11 +38,11 @@ jobs:
         run: poetry run pytest
         working-directory: ./package/orbconformal/
       - name: Save coverage only once
-        if: runner.os == "Linux" & ${{matrix.python-version == 3.7}}
+        if: runner.os == "Linux" && ${{matrix.python-version == 3.7}}
         run: poetry run pytest --cov=./ --cov-report=xml
         working-directory: ./package/orbconformal/
       - name: Send code coverage
-        if: runner.os == "Linux" & ${{matrix.python-version == 3.7}}
+        if: runner.os == "Linux" && ${{matrix.python-version == 3.7}}
         uses: codecov/codecov-action@v1
         with:
           files: package/orbconformal/coverage.xml
