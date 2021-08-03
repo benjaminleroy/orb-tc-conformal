@@ -20,10 +20,10 @@ jobs:
         config:
           - {os: ubuntu-20.04, python-version: "3.7"}
           - {os: ubuntu-20.04, python-version: "3.8"}
-          - {os: macos-latest, python-verson: "3.7"}
-          - {os: macos-latest, python-verson: "3.8"}
-          - {os: windows-latest, python-verson: "3.7"}
-          - {os: windows-latest, python-verson: "3.8"}
+          - {os: macos-latest, python-version: "3.7"}
+          - {os: macos-latest, python-version: "3.8"}
+          - {os: windows-latest, python-version: "3.7"}
+          - {os: windows-latest, python-version: "3.8"}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,6 +37,7 @@ jobs:
         run: |
           pip install poetry
           poetry install
+        working-directory: ./package/orbconformal/
       - name: Test with pytest
         run: |
           poetry run pytest
