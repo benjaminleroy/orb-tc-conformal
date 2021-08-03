@@ -11,6 +11,6 @@ Compile `.md` files locally:
 grip -b file_name.md
 ```
 
-# `orbconformal` package
+## `orbconformal` package
 
 Head to the [package](https://github.com/benjaminleroy/orb-tc-conformal/tree/main/package/orbconformal) part of this repo.

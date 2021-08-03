@@ -1,7 +1,7 @@
 # orbconformal 
 
 [![Python](https://img.shields.io/badge/python-3.7-blue)]()
-[![gitactions]()](https://github.com/benjaminleroy/orb-tc-conformal/actions/new)
+[![test & coverage](https://github.com/benjaminleroy/orb-tc-conformal/actions/workflows/code-check-and-coverage.yaml/badge.svg)](https://github.com/benjaminleroy/orb-tc-conformal/actions/workflows/code-check-and-coverage.yaml)
 [![codecov](https://codecov.io/gh/benjaminleroy/orbconformal/branch/main/graph/badge.svg)](https://codecov.io/gh/benjaminleroy/orbconformal)
 
 <!--
