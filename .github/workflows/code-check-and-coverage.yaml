@@ -35,13 +35,11 @@ jobs:
           poetry install
         working-directory: ./package/orbconformal/
       - name: Test with pytest
-        run: |
-          poetry run pytest
+        run: poetry run pytest
         working-directory: ./package/orbconformal/
       - name: Save coverage only once
         if: runner.os == "Linux" & ${{matrix.python-version == 3.7}}
-        run: |
-           poetry run pytest --cov-report=xml
+        run: poetry run pytest --cov=./ --cov-report=xml
         working-directory: ./package/orbconformal/
       - name: Send code coverage
         if: runner.os == "Linux" & ${{matrix.python-version == 3.7}}

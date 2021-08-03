@@ -318,4 +318,3 @@ def test_mode_clustering_check():
 
     assert np.all(n_groups2_2[-1] == 2), \
         "should find only 2 groups with highest eps [2 groups]"
-

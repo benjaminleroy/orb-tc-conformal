@@ -30,7 +30,7 @@ def meanshift_multidim_funct_single(X_array,
 
     Returns
     -------
-    t: int
+    t_step: int
         number of interations actually taken
     current_obs_inner: numpy.ndarray
         final step taken by the current_obs toward the mode
@@ -42,7 +42,7 @@ def meanshift_multidim_funct_single(X_array,
     if maxT == 0: # so that we don't think we're at least doing 1 step
         return -1, current_obs_inner
 
-    for t in np.arange(maxT):
+    for t_step in np.arange(maxT):
         d_inner = l2_dist_lots2one(current_obs_inner, X_array)
 
         kernel_weights_inner = np.exp(-1*d_inner**2/sigma)
@@ -63,7 +63,7 @@ def meanshift_multidim_funct_single(X_array,
         if diff_inner < eps:
             break
 
-    return t, current_obs_inner
+    return t_step, current_obs_inner
 
 
 def meanshift_multidim_funct(X_array, G_array = None,
@@ -109,7 +109,7 @@ def meanshift_multidim_funct(X_array, G_array = None,
     if G_array is None:
         G_array = X_array.copy()
 
-    if type(maxT) is int:
+    if isinstance(maxT, int):
         maxT = maxT*np.ones(G_array.shape[0], dtype = int)
 
     t_vec = np.zeros(G_array.shape[0])
