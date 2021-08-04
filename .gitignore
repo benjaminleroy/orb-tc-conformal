@@ -6,3 +6,5 @@ data/*
 
 .Rproj.user/
 .Rhistory
+
+package/orbconformal/docs/_build/*
