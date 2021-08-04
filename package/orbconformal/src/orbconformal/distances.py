@@ -85,3 +85,38 @@ def l2_dist_matrix(X_array, Y_array = None):
         dmat[r_idx,:] = l2_dist_lots2one(X_array[r_idx], Y_array)
 
     return dmat
+
+def l2_dist_lots2one_pointwise(mat1, data_array):
+    """
+    calculate distance between a matrix and an array of matrices *per point*.
+
+    Parameters
+    ----------
+    mat1: numpy.ndarray
+        numpy array (n, p)
+    data_array: numpy.ndarray
+        numpy array (r,n,p) treat each row (relative to first index)
+        as a new matrix
+
+    Returns
+    --------
+    numpy.ndarray
+        numpy vector (r,n,p) of distances between mat1 and data_array[r]'s
+        points.
+
+    Note
+    ----
+        Although this is called the "l2" distance, it's the sqrt(x^2), so it
+        could also be called the "l1" distance.
+
+    """
+    assert len(mat1.shape) == 2 and len(data_array.shape) == 3, \
+        "mat1 should be 2d and data_array should be 3d"
+    assert mat1.shape == data_array.shape[1:], \
+        "matrix and data_array columns must be the same shape"
+
+    mat1_array = np.tile(mat1.reshape(1,mat1.shape[0], mat1.shape[1]),
+                         (data_array.shape[0],1,1))
+
+    return np.abs(mat1_array-data_array)
+

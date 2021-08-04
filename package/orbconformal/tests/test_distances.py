@@ -62,3 +62,24 @@ def test_l2_dist_matrix():
 
     assert np.all(square[1:3] == partial), \
         "slicing of data into the l2_dist_matrix works correctly"
+
+def test_l2_dist_lots2one_pointwise():
+    """
+    test l2_dist_lots2one_pointwise function
+    """
+
+    data_array = np.random.normal(size = 5*20).reshape(5,4,5)
+    mat1 = data_array[0]
+    assert np.all(oc.l2_dist_lots2one_pointwise(mat1, data_array)[0] == 0), \
+        "l2_dist_lots2one_pointwsie: distance between self should be 0"
+    assert np.all(oc.l2_dist_lots2one_pointwise(mat1, data_array) >= 0), \
+        "l2_dist_lots2one_pointwise: " +\
+        "distance between two random matrices should be greater than"+\
+        "or equal to 0"
+
+    mat2 = mat1.copy()
+    mat2[0,0] += 20
+    assert np.all(oc.l2_dist_lots2one_pointwise(mat2, data_array)[0,0,0] == 20) and \
+        np.sum(oc.l2_dist_lots2one_pointwise(mat2, data_array)[0]) == 20, \
+        "l2_dist_lots2one_pointwise: static distance test didn't correctly work"
+
