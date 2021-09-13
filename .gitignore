@@ -8,3 +8,10 @@ data/*
 .Rhistory
 
 package/orbconformal/docs/_build/*
+
+
+*.pem
+*cer
+connect*.sh
+
+package/orbconformal/docs/_build/*
