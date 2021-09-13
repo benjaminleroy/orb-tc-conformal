@@ -53,3 +53,5 @@ grip -b file_name.md
   ```bash
   poetry install
   ```
+
+  Note that sometimes deleting the .lock file can be helpful if there are major errors installing packages
