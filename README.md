@@ -48,3 +48,8 @@ grip -b file_name.md
   ```bash
   poetry run make html
   ```
+
+- install package locally
+  ```bash
+  poetry install
+  ```
