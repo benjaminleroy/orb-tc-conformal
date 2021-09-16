@@ -6,6 +6,10 @@ from functools import lru_cache
 #
 # they have been rewritten for some cleaner comments
 
+#---------------------------
+# Feature creation
+#---------------------------
+
 
 def distance_from_coord(lat1, lat2, lon1, lon2):
     """
@@ -79,7 +83,6 @@ def coord_from_distance(lat, lon, distance):
         'lonLo': np.min(lonEnd)
     })
 
-
 @lru_cache
 def stamp_area(lat, distance=400, resolution=0.04):
     """
@@ -114,4 +117,232 @@ def stamp_area(lat, distance=400, resolution=0.04):
                                grid[:, 1])
     val = np.sum(rads < distance)
     return val
+
+
+#---------------------------
+# PCA feature creation
+#---------------------------
+
+def update_pca_size(pca_size, size_cols_means, size_cols, df_size_rad_tc):
+    """
+    Update size dataframe with first 3 PCA compression vectors
+
+    Parameters
+    ----------
+    pca_size : sklearn PCA model
+        fit on training data
+    size_cols_means : numpy vector
+        means of columns of training data (pre PCA compression)
+    size_cols : list
+        names of columns in df_size_rad_tc that are associated with the size function
+    df_size_rad_tc : pd.DataFrame
+        data frame with size function for test data
+
+    Returns
+    -------
+    updated df_size_rad_tc function with 3 new columns; 'size_pca{1,2,3}'
+
+    """
+    size_pca_trans = pca_size.transform(df_size_rad_tc.loc[:, size_cols] - size_cols_means)
+    df_size_rad_tc['size_pca1'] = size_pca_trans[:, 0]
+    df_size_rad_tc['size_pca2'] = size_pca_trans[:, 1]
+    df_size_rad_tc['size_pca3'] = size_pca_trans[:, 2]
+
+    return df_size_rad_tc
+
+
+def update_pca_rad(pca_rad, rad_cols_means, rad_cols, df_size_rad_tc):
+    """
+    Update rad dataframe with first 2 PCA compression vectors
+
+    Parameters
+    ----------
+    pca_rad : sklearn PCA model
+        fit on training data
+    rad_cols_means : numpy vector
+        means of columns of training data (pre PCA compression)
+    rad_cols : list
+        names of columns in df_size_rad_tc that are associated with the rad function
+    df_size_rad_tc : pd.DataFrame
+        data frame with rad function for test data
+
+    Returns
+    -------
+    updated df_size_rad_tc function with 2 new columns; 'rad_pca{1,2}'
+
+    Details
+    -------
+    If any row has any NAs in the rad rows it is not compressed (naturally)
+    """
+
+    no_null_rows = np.array(df_size_rad_tc.loc[:, rad_cols].isna().sum(1) == 0)
+
+    rad_pca_trans = pca_rad.transform(df_size_rad_tc.loc[no_null_rows, rad_cols] - rad_cols_means)
+
+    df_size_rad_tc['rad_pca1'] = np.nan
+    df_size_rad_tc['rad_pca2'] = np.nan
+
+    df_size_rad_tc.loc[no_null_rows, 'rad_pca1'] = rad_pca_trans[:, 0]
+    df_size_rad_tc.loc[no_null_rows, 'rad_pca2'] = rad_pca_trans[:, 1]
+
+    return df_size_rad_tc
+
+
+#---------------------------
+# Data Loading & processing
+#---------------------------
+
+
+def get_orb_files(file_dir, location_prefix, orb_suffix, min_year=2000, max_year=2005):
+    """
+    Load a certain type of ORB functions for tropical cyclones from a window of years
+
+    Parameters
+    ----------
+    file_dir : string
+        string of file directory where the files exist (e.g. )
+    location_prefix : string
+        location that the tropical cyclone is from (e.g. AL = Alantic Ocean)
+    orb-suffix : string
+       suffix at the end of the file that captures the type of data information
+       (e.g. RAD = "_rad.csv", SIZE = "-size.csv", PATH = "_TCdata.csv")
+    min_year : int
+        minimum year to grab tropical cylones from (naturally inclusive)
+    max_year : int
+        maximum year to grab tropical cylones from (naturally inclusive)
+
+    Returns
+    -------
+    list of file names
+
+    Details
+    -------
+    File names look something like "AL082005_rad.csv" (for location_prefix = "AL", orb-suffix = "_rad.csv",
+    min_year <= 2005, max_year >=2005)
+    """
+    years = [str(i) for i in range(min_year, max_year + 1)]
+    files = os.listdir(file_dir)
+    rad_files = []
+    for f in files:
+        is_orb = orb_suffix in f
+        year_valid = False
+        location_valid = f.startswith(location_prefix)
+        for year in years:
+            year_valid = year_valid or (year in f)
+        if is_orb and year_valid and location_valid:
+            rad_files.append(f)
+    return rad_files
+
+def collect_size_df(size_directory, size_files):
+    """
+    create dataframe for size functions of all tropical cyclones in selection
+
+    Parameters
+    ----------
+    size_directory : string
+        location of directory for size files
+    size_files : list of strings
+        list of csv file names for the size information
+
+    Returns
+    -------
+    df_size : pd.DataFrame
+        DataFrame of size functions concatenated across all tropical cylones
+    size_cols : list
+        list of strings of columns of df_size that are associated with the actual function
+    """
+    dfs = []
+    for f in size_files:
+        path = f'{size_directory}/{f}'
+        storm_id = f.split('-')[0]
+        df = pd.read_csv(path, header=0, skiprows=[0, 2])
+        del df['Unnamed: 1']
+        del df['time']
+        df = df.transpose()
+        df.reset_index(inplace=True)
+        df.rename(columns=dict([(i, str(int(i) - 100)) for i in range(100)]), inplace=True)
+        df.rename(columns={'index': 'timestamp'}, inplace=True)
+        df['ID'] = storm_id
+        df['timestamp'] = pd.to_datetime(df['timestamp']).dt.round('min')
+        dfs.append(df)
+
+    df_size = pd.concat(dfs)
+
+    size_cols = [str(i) for i in range(-1, -100 - 1, -1)]
+
+    return df_size, size_cols
+
+def collect_rad_df(rad_directory, rad_files):
+    """
+    create dataframe for rad functions of all tropical cyclones in selection
+
+    Parameters
+    ----------
+    rad_directory : string
+        location of directory for rad files
+    rad_files : list of strings
+        list of csv file names for the rad information
+
+    Returns
+    -------
+    df_rad : pd.DataFrame
+        DataFrame of size functions concatenated across all tropical cylones
+    rad_cols : list
+        list of strings of columns of df_rad that are associated with the actual function
+    """
+    dfs = []
+    for f in rad_files:
+        path = f'{rad_directory}/{f}'
+        storm_id = f.split('_')[0]
+        df = pd.read_csv(path, header=0, skiprows=[0, 2])
+        df.rename(columns={'radius': 'timestamp'}, inplace=True)
+        df['timestamp'] = pd.to_datetime(df['timestamp']).dt.round('min')
+        df['ID'] = storm_id
+        df.rename(columns=dict([(str(float(i)), str(i)) for i in range(5, 600 + 5, 5)]), inplace=True)
+        df.sort_values('timestamp', inplace=True)
+        df.reset_index(drop=True, inplace=True)
+        dfs.append(df)
+
+    df_rad = pd.concat(dfs)
+    rad_cols = [str(i) for i in range(5, 600 + 5, 5)]
+
+    return df_rad, rad_cols
+
+def collect_tc_df(tc_directory, tc_files):
+    """
+    create dataframe for lon/lat paths of all tropical cyclones in selection
+
+    Parameters
+    ----------
+    tc_directory : string
+        location of directory for tc (lon/lat path) files
+    rad_files : list of strings
+        list of csv file names for the tc (lon/lat path) information
+
+    Returns
+    -------
+    df_tc : pd.DataFrame
+        DataFrame of lat/lon paths concatenated across all tropical cylones
+    tc_cols : list
+        list of strings of columns of df_tc that are associated with the paths (LAT only)
+    """
+
+    dfs = []
+    for f in tc_files:
+        path = f'{TC_DIRECTORY}/{f}'
+        storm_id = f.split('_')[0]
+        df = pd.read_csv(path, header=0)
+        df.rename(columns={'TIMESTAMP': 'timestamp'}, inplace=True)
+        df['timestamp'] = pd.to_datetime(df['timestamp']).dt.round('min')
+        #df = df.resample('0.5H', on='timestamp').mean().reset_index().interpolate()
+        ## ^ interpolation wasn't working due to timestamp columns...
+        df = df.resample('0.5H', on='timestamp').mean().reset_index()
+        df.loc[:,df.columns != "timestamp"] = df.loc[:,df.columns != "timestamp"].interpolate()
+        df['LAT'] = df['LAT'].round(1)
+        df['ID'] = storm_id
+        dfs.append(df[['ID', 'timestamp', 'LAT', 'WIND']])
+
+    df_tc = pd.concat(dfs)
+    tc_cols = ["LAT"]
+    return df_tc, tc_cols
 
