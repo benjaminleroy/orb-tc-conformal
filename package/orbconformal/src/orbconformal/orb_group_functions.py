@@ -121,7 +121,7 @@ def stamp_area(lat, distance=400, resolution=0.04):
     return val
 
 
-def size_normalization(df_size_rad_tc, size_col):
+def size_normalization(df_size_rad_tc, size_cols):
     """
     Normalize the size function relative to the actual area of the image used
 
@@ -130,7 +130,7 @@ def size_normalization(df_size_rad_tc, size_col):
     df_size_rad_tc : pd.DataFrame
         data frame with size function information and a column 'LAT' that
         defines the size of the image area
-    size_col : list of strings
+    size_cols : list of strings
         list of strings of column names associated with the size function
 
     Returns
