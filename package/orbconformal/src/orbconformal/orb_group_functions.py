@@ -331,7 +331,7 @@ def collect_tc_df(tc_directory, tc_files):
 
     dfs = []
     for f in tc_files:
-        path = f'{TC_DIRECTORY}/{f}'
+        path = f'{tc_directory}/{f}'
         storm_id = f.split('_')[0]
         df = pd.read_csv(path, header=0)
         df.rename(columns={'TIMESTAMP': 'timestamp'}, inplace=True)
