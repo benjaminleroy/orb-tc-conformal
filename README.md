@@ -7,7 +7,7 @@ The data and simulation models were provided by Trey McNeely, Ann Lee, Kimberly 
 
 ## `orbconformal` package
 
-[![Python](https://img.shields.io/badge/python-3.7-blue)]()
+[![Python](https://img.shields.io/badge/python-3.8-blue)]()
 [![test & coverage](https://github.com/benjaminleroy/orb-tc-conformal/actions/workflows/code-check-and-coverage.yaml/badge.svg)](https://github.com/benjaminleroy/orb-tc-conformal/actions/workflows/code-check-and-coverage.yaml)
 [![codecov](https://codecov.io/gh/benjaminleroy/orb-tc-conformal/branch/main/graph/badge.svg)](https://codecov.io/gh/benjaminleroy/orb-tc-conformal)
 [![CodeFactor](https://www.codefactor.io/repository/github/benjaminleroy/orb-tc-conformal/badge?s=59656066a0a4a17814dd3d5f29b154e40fcc585e)](https://www.codefactor.io/repository/github/benjaminleroy/orb-tc-conformal)
