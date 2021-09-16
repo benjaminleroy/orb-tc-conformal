@@ -23,7 +23,9 @@ from .geometric_structure import calc_small_ball_rad_multidim_func
 
 # feature creation
 from .orb_group_functions import distance_from_coord, coord_from_distance, \
-    stamp_area
+    stamp_area, size_normalization
+# data merging
+from .orb_group_functions import data_merge
 # pca feature creation
 from .orb_group_functions import update_pca_size, update_pca_rad
 # data loading / processing

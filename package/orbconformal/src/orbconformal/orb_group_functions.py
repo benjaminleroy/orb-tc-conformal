@@ -121,6 +121,77 @@ def stamp_area(lat, distance=400, resolution=0.04):
     return val
 
 
+def size_normalization(df_size_rad_tc, size_col):
+    """
+    Normalize the size function relative to the actual area of the image used
+
+    Parameters
+    ----------
+    df_size_rad_tc : pd.DataFrame
+        data frame with size function information and a column 'LAT' that
+        defines the size of the image area
+    size_col : list of strings
+        list of strings of column names associated with the size function
+
+    Returns
+    -------
+    an updated df_size_rad_tc with normalized size function
+
+    Details
+    -------
+    see also oc.stamp_area
+
+    """
+    df_size_rad_tc['area'] = df_size_rad_tc['LAT'].apply(stamp_area)
+
+    for size_col in size_cols:
+        df_size_rad_tc[size_col] = df_size_rad_tc[size_col] /\
+                                        df_size_rad_tc['area']
+    return df_size_rad_tc
+
+
+#---------------------------
+# Data Merging
+#---------------------------
+
+def data_merge(df_size, df_rad, df_tc):
+    """
+    Merge size, rad and tc dataframe into 1 dataframe and collect unique TC ids
+
+    Arguments
+    ---------
+    df_size: pd.DataFrame
+        data frame with size function information for each TC at given times
+    df_rad: pd.DataFrame
+        data frame with rad function information for each TC at given times
+    df_tc: pd.DataFrame
+        data frame with location function information for each TC at given
+        times
+
+    Returns
+    -------
+    df_size_rad_tc: pd.DataFrame
+        combination of df_size, df_rad, df_tc
+    unique_storm_ids: list
+        unique IDs for TCs in the df_size_rad_tc data frame
+
+    Details
+    -------
+    Expected to be done before other transforms of the data (but not really
+    needed...)
+    """
+    df_size_rad = df_size.merge(df_rad, how='inner',
+                                on=['timestamp', 'ID'],
+                                suffixes=('_size', '_rad'))
+    df_size_rad_tc = df_size_rad.merge(df_tc, how='inner',
+                                       on=['timestamp', 'ID'],
+                                       suffixes=('', '_tc'))
+
+    unique_storm_ids = list(df_size_rad_tc['ID'].unique()) # training data?
+
+    return df_size_rad_tc, unique_storm_ids
+
+
 #---------------------------
 # PCA feature creation
 #---------------------------
