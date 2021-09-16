@@ -19,6 +19,13 @@ from .meanshift import meanshift_multidim_funct_single, \
 from .psuedo_density import psuedo_density_multidim_func
 from .geometric_structure import calc_small_ball_rad_multidim_func
 
+
+
+
+from .orb_group_functions import distance_from_coord, coord_from_distance, \
+    stamp_area
+
+
 # loading in data --------
 _location = _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.realpath(__file__))))
 _my_file = _os.path.join(_location, 'data/', 'AL122005_rad.csv')
