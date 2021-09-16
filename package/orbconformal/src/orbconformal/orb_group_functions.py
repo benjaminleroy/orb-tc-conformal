@@ -2,6 +2,7 @@ import numpy as np
 from functools import lru_cache
 import os
 import pandas as pd
+import progressbar
 
 #
 # these functions came from code written by Pavel Khnokhlov and Trey McNeely
@@ -121,7 +122,7 @@ def stamp_area(lat, distance=400, resolution=0.04):
     return val
 
 
-def size_normalization(df_size_rad_tc, size_cols):
+def size_normalization(df_size_rad_tc, size_cols, verbose=True):
     """
     Normalize the size function relative to the actual area of the image used
 
@@ -132,6 +133,8 @@ def size_normalization(df_size_rad_tc, size_cols):
         defines the size of the image area
     size_cols : list of strings
         list of strings of column names associated with the size function
+    verbose : boolean
+        logic if the calculation of the image area should be done verbosely
 
     Returns
     -------
@@ -142,7 +145,17 @@ def size_normalization(df_size_rad_tc, size_cols):
     see also oc.stamp_area
 
     """
-    df_size_rad_tc['area'] = df_size_rad_tc['LAT'].apply(stamp_area)
+    if not verbose:
+        df_size_rad_tc['area'] = df_size_rad_tc['LAT'].apply(stamp_area)
+    else:
+        bar = progressbar.ProgressBar()
+        my_iter = bar(list(enumerate(df_size_rad_tc['LAT'])))
+
+        area = np.zeros(df_size_rad_tc['LAT'].shape[0])
+        for x_idx, x_val in my_iter:
+           area[x_idx] = stamp_area(x_val)
+
+        df_size_rad_tc['area'] = area
 
     for size_col in size_cols:
         df_size_rad_tc[size_col] = df_size_rad_tc[size_col] /\
