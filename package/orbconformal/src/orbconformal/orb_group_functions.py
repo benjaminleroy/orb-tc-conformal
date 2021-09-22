@@ -148,7 +148,11 @@ def size_normalization(df_size_rad_tc, size_cols, verbose=True):
     if not verbose:
         df_size_rad_tc['area'] = df_size_rad_tc['LAT'].apply(stamp_area)
     else:
-        bar = progressbar.ProgressBar()
+        bar = progressbar.ProgressBar(widgets=[progressbar.Bar(),
+                                               progressbar.Percentage(),
+                                               ' ',
+                                               progressbar.ETA()])
+
         my_iter = bar(list(enumerate(df_size_rad_tc['LAT'])))
 
         area = np.zeros(df_size_rad_tc['LAT'].shape[0])
