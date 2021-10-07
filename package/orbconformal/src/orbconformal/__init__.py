@@ -7,7 +7,11 @@ import os as _os
 __version__ = version(__name__)
 
 from .utils import check_character_percent
-from .data_cleaning import linear_interp
+from .data_cleaning import linear_interp, linear_interp_df, \
+    remove_init_and_final_missing_rows_for_interp
+from .data_processing import randomize_range, \
+    update_from_previous_starting_point, define_sample_cuts, \
+    df_subset
 
 from .vis_tools import vis_surfaces, vis_sequence_surface
 
@@ -30,6 +34,9 @@ from .orb_group_functions import data_merge
 from .orb_group_functions import update_pca_size, update_pca_rad
 # data loading / processing
 from .orb_group_functions import get_orb_files, collect_size_df, collect_rad_df, collect_tc_df
+
+
+
 
 
 
