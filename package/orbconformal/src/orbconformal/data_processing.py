@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import random
+import warnings
 from .utils import check_define_sample_cuts
 
 def randomize_range(length_range, window_length = 36):
@@ -108,8 +109,9 @@ def define_sample_cuts(length_tc_df, seed, window=60, dependent_gap=48):
 
         new_starting_index = np.nan * np.ones(new_df.shape[0])
 
-        new_starting_index[np.logical_not(np.isnan(new_df.length))] =         [randomize_range(x, window)
-         for x in new_df.length[np.logical_not(np.isnan(new_df.length))]]
+        new_starting_index[np.logical_not(np.isnan(new_df.length))] = \
+        [randomize_range(x, window)
+            for x in new_df.length[np.logical_not(np.isnan(new_df.length))]]
 
         new_df["starting_index"] = new_starting_index
         new_df.starting_index = new_df.starting_index.convert_dtypes(int)
