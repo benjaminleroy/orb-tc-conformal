@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import random
 
 def randomize_range(length_range, window_length = 36):
     """
@@ -164,7 +165,8 @@ def df_subset(df, length_tc_df, window):
     Doesn't check if associated window allows for cuts for subsets same ID to
         overlap
     """
-    assert df['ID'].unique().shape[0] == 1,        "expected df to have a single unique value in the 'ID' column"
+    assert df['ID'].unique().shape[0] == 1, \
+        "expected df to have a single unique value in the 'ID' column"
 
     info = length_tc_df.loc[length_tc_df["ID"] == df['ID'].unique()[0],:]
 
