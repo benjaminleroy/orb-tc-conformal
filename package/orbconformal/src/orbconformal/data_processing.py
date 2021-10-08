@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import random
+from .utils import check_define_sample_cuts
 
 def randomize_range(length_range, window_length = 36):
     """
