@@ -4,7 +4,6 @@ import progressbar
 import joblib
 import networkx as nx
 import pandas as pd
-import ipdb
 
 def meanshift_multidim_funct_single(X_array,
                                     current_obs,
