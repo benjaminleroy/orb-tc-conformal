@@ -4,6 +4,7 @@ import progressbar
 import joblib
 import networkx as nx
 import pandas as pd
+import ipdb
 
 def meanshift_multidim_funct_single(X_array,
                                     current_obs,
@@ -36,7 +37,6 @@ def meanshift_multidim_funct_single(X_array,
         final step taken by the current_obs toward the mode
     """
 
-
     current_obs_inner = current_obs.copy()
 
     if maxT == 0: # so that we don't think we're at least doing 1 step
@@ -45,7 +45,7 @@ def meanshift_multidim_funct_single(X_array,
     for t_step in np.arange(maxT):
         d_inner = l2_dist_lots2one(current_obs_inner, X_array)
 
-        kernel_weights_inner = np.exp(-1*d_inner**2/sigma)
+        kernel_weights_inner = np.exp(-1*d_inner**2/sigma**2)
         kernel_weights_inner_standardized = kernel_weights_inner/\
             kernel_weights_inner.sum()
 

@@ -63,7 +63,8 @@ def test_meanshift_multidim_funct_single():
         for steps in np.arange(15):
             t, out =  oc.meanshift_multidim_funct_single(X_array = z_multi,
                                             current_obs = my_current_obs,
-                                            sigma = 5, eps = 1e-10, maxT = 1)
+                                            sigma = np.sqrt(5),
+                                            eps = 1e-10, maxT = 1)
 
             complete_list_steps.append(out.copy())
             my_current_obs = out.copy()
@@ -202,7 +203,7 @@ def test_mode_clustering_check():
                              for i in np.arange(shifts_vec_p.shape[0])])
 
     dist_mat = oc.l2_dist_matrix(z_p)
-    sigma = np.quantile(dist_mat.ravel(), .6)
+    sigma = np.quantile(dist_mat.ravel(), .4)
 
 
     n_groups = oc.mode_clustering_check(X_array = z_p, sigma = sigma,
@@ -266,7 +267,7 @@ def test_mode_clustering_check():
                              for i in np.arange(shifts_vec_p2.shape[0])])
 
     dist_mat2 = oc.l2_dist_matrix(z_p2)
-    sigma2 = np.quantile(dist_mat2.ravel(), .6)
+    sigma2 = np.quantile(dist_mat2.ravel(), .4)
 
 
     n_groups_2 = oc.mode_clustering_check(X_array = z_p2, sigma = sigma2,
@@ -284,7 +285,7 @@ def test_mode_clustering_check():
                                       verbose = False)
 
 
-    non_negative_rows_small2 = np.sum((n_groups == -1).sum(axis = 1) == 0)
+    non_negative_rows_small2 = np.sum((n_groups_2 == -1).sum(axis = 1) == 0)
 
     assert np.all(n_groups_2[:(non_negative_rows_small2-1)] == \
         n_groups2_2[:(non_negative_rows_small2-1)]), \

@@ -74,7 +74,12 @@ def simulate(model,
     rows_simulate_beyond = num_full_rows - rows_start
 
     # basic checks
-    assert num_full_rows == rad_mtx_sim_NA.shape[0] and         num_full_rows == extra_feats_size_mtx_sim_NA.shape[1] and         num_full_rows == extra_feats_rad_mtx_sim_NA.shape[1],         "expected the same number of rows in all sim_NA structures, " +        "(size_mtx_sim_NA.shape[0], rad_mtx_sim_NA.shape[0], "+        "extra_feats_size_mtx_sim_NA.shape[1], extra_feats_rad_mtx_sim_NA.shape[1])"
+    assert num_full_rows == rad_mtx_sim_NA.shape[0] and \
+        num_full_rows == extra_feats_size_mtx_sim_NA.shape[1] and \
+        num_full_rows == extra_feats_rad_mtx_sim_NA.shape[1], \
+        "expected the same number of rows in all sim_NA structures, " + \
+        "(size_mtx_sim_NA.shape[0], rad_mtx_sim_NA.shape[0], "+ \
+        "extra_feats_size_mtx_sim_NA.shape[1], extra_feats_rad_mtx_sim_NA.shape[1])"
 
     # creating larger desired structure to pass into model
     # we are putting in nans to rows not yet predicted...
@@ -118,21 +123,25 @@ def simulate(model,
                 # sample pixel value from each orb
                 # set (row, col) pixel value in orb to this sampled one
                 if col < num_size_cols:
-                    size_val = np.random.normal(torch.Tensor.cpu(mean_size), torch.Tensor.cpu(stdev_size))
+                    size_val = np.random.normal(torch.Tensor.cpu(mean_size),
+                                                torch.Tensor.cpu(stdev_size))
                     size_mtx_sim_NA[row, col] = size_val
 
-                rad_val = np.random.normal(torch.Tensor.cpu(mean_rad), torch.Tensor.cpu(stdev_rad))
+                rad_val = np.random.normal(torch.Tensor.cpu(mean_rad),
+                                           torch.Tensor.cpu(stdev_rad))
                 rad_mtx_sim_NA[row, col] = rad_val  # BPL: updating matrix
 
             # take PCA after row is fully simulated and set feature values
             if row + 1 < num_full_rows: # BPL: this is out of first loop
-                rad_pcas = pca_rad.transform((rad_mtx_sim_NA[row, :] - np.array(rad_cols_means)).reshape(1, -1))[0]
+                rad_pcas = pca_rad.transform((rad_mtx_sim_NA[row, :] - \
+                                                np.array(rad_cols_means)).reshape(1, -1))[0]
                 rad_pca1_val, rad_pca2_val = rad_pcas[0], rad_pcas[1]
                 # set PCA coeffs for next row
                 extra_feats_size_mtx_sim_NA[2, row + 1, :] = rad_pca1_val
                 extra_feats_size_mtx_sim_NA[3, row + 1, :] = rad_pca2_val
 
-                size_pcas = pca_size.transform((size_mtx_sim_NA[row, :] - np.array(size_cols_means)).reshape(1, -1))[0]
+                size_pcas = pca_size.transform((size_mtx_sim_NA[row, :] - \
+                                                    np.array(size_cols_means)).reshape(1, -1))[0]
                 size_pca1_val, size_pca2_val, size_pca3_val = size_pcas[0], size_pcas[1], size_pcas[2]
                 extra_feats_rad_mtx_sim_NA[2, row + 1, :] = size_pca1_val
                 extra_feats_rad_mtx_sim_NA[3, row + 1, :] = size_pca2_val
