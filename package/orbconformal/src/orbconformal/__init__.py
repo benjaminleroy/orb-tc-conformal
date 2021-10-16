@@ -13,7 +13,8 @@ from .data_processing import randomize_range, \
     update_from_previous_starting_point, define_sample_cuts, \
     df_subset
 
-from .vis_tools import vis_surfaces, vis_sequence_surface
+from .vis_tools import vis_surfaces, vis_sequence_surface, \
+    vis_slice_x, vis_slice_y
 
 
 from .distances import l2_dist, l2_dist_lots2one, l2_dist_matrix, \
