@@ -42,7 +42,7 @@ def psuedo_density_multidim_func(X_array, Y_array = None,
         Y_dmat = l2_dist_matrix(X_array = X_array,
                                 Y_array = Y_array)
 
-    Y_kmat = np.exp(-Y_dmat**2/sigma)
+    Y_kmat = np.exp(-Y_dmat**2/sigma**2)
     pd_vec = Y_kmat.mean(axis = 0)
     # ^given oc.l2_dist_matrix output means Y_values will be associated with columns
 
