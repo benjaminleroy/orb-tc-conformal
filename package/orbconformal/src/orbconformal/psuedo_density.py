@@ -2,6 +2,7 @@ import numpy as np
 from .distances import l2_dist_matrix
 from .utils import check_character_percent
 
+
 def psuedo_density_multidim_func(X_array, Y_array = None,
                   sigma_string = "45%"):
     """
@@ -35,13 +36,15 @@ def psuedo_density_multidim_func(X_array, Y_array = None,
     X_dmat = l2_dist_matrix(X_array)
     sigma = np.quantile(X_dmat.ravel(), sigma_proportion)
 
+    if sigma == 0:
+        warning("sigma value is 0, errors will occure in pd_vec,"+\
+                "pick a larger sigma_string (current %s)" % sigma_string)
 
     if Y_array is None:
         Y_dmat = X_dmat.copy()
     else:
         Y_dmat = l2_dist_matrix(X_array = X_array,
                                 Y_array = Y_array)
-
     Y_kmat = np.exp(-Y_dmat**2/sigma**2)
     pd_vec = Y_kmat.mean(axis = 0)
     # ^given oc.l2_dist_matrix output means Y_values will be associated with columns
