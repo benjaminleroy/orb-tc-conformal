@@ -1,6 +1,8 @@
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import matplotlib
+
 
 
 def vis_surfaces(z_multi,
@@ -404,7 +406,7 @@ def vis_slice_x(xx, yy, zs):
     return(fig)
 
 
-def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
+def vis_slice_y(xx, yy, zs, c=None, keep_2d_legend=False):
     """
     visualize slices of surfaces and slices relative to y
 
@@ -416,6 +418,8 @@ def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
         vector (m, ) of y values that define the surfaces
     zs : list
         list of numpy arrays each (n,m) relative to x and y values
+    c : numpy array
+        length zs, vector of floats to be associated with the color
     keep_2d_legend : boolean
         default is false
 
@@ -430,6 +434,20 @@ def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
     assert yy.shape[0] == zs[0].shape[0], \
         "expect the number of *rows* of zs elements to the same length of xx"
 
+    if c is not None:
+        assert keep_2d_legend is False, \
+            "if c is not None (aka will color the obs), "+\
+            "then keep_2d_legend must be false"
+        c_range = range_ben(c)
+        rb_cmap = matplotlib.cm.get_cmap('RdBu_r')
+        rb_norm = matplotlib.colors.Normalize(vmin=c_range[0],
+                                              vmax=c_range[1])
+        def rgb_convert(c, cmap, norm):
+            rgba_tuple = cmap(norm(c),bytes=True)
+            rgb_str = "rgb(%i,%i,%i)" % (rgba_tuple[0],
+                                         rgba_tuple[1],
+                                         rgba_tuple[2])
+            return rgb_str
 
     fig = make_subplots(
          rows=1, cols=2,
@@ -437,14 +455,26 @@ def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
          column_widths=[0.6, 0.4],
          specs=[[{"type": "scene"}, {"type": "xy"}]])
 
+
     counter_surface = 0
     for index in range(len(zs)):
-        fig.add_trace(go.Surface(x=xx,
-                                  y=yy,
-                                  z=zs[index],
-                                  colorscale="Viridis",
-                                  showscale=False,
-                                  opacity = .3), row=1, col=1)
+        if c is not None:
+            fig.add_trace(go.Surface(x=xx,
+                                      y=yy,
+                                      z=zs[index],
+                                      colorscale="RdBu_r",
+                                      surfacecolor= c[index]*np.ones(zs[index].shape),
+                                      cmin = c_range[0],
+                                      cmax = c_range[1],
+                                      showscale=False,
+                                      opacity = .3), row=1, col=1)
+        else:
+            fig.add_trace(go.Surface(x=xx,
+                          y=yy,
+                          z=zs[index],
+                          colorscale="Viridis",
+                          showscale=False,
+                          opacity = .3), row=1, col=1)
         counter_surface += 1
 
     # --------
@@ -476,9 +506,19 @@ def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
         for index in range(len(zs)):
             yyy_inner_storage.append(zs[index][yyy_idx,:])
             ival = len(yyy_inner_storage)
-            fig.add_trace(go.Scatter(x= xx,
-                                     y = yyy_inner_storage[ival-1].copy(), mode="lines",
-                                    visible=False), row=1, col=2)    # 2d lines
+            if c is not None:
+                fig.add_trace(go.Scatter(x= xx,
+                                         y = yyy_inner_storage[ival-1].copy(),
+                                         mode="lines",
+                                         line = {"color": rgb_convert(c[index],
+                                                                      rb_cmap,
+                                                                      rb_norm)},
+                                        visible=False), row=1, col=2) # 2d lines
+            else:
+                fig.add_trace(go.Scatter(x= xx,
+                                         y = yyy_inner_storage[ival-1].copy(),
+                                         mode="lines",
+                                        visible=False), row=1, col=2) # 2d lines
 
             counter_yyy_slices += 1
 
@@ -564,3 +604,4 @@ def vis_slice_y(xx,yy,zs, keep_2d_legend = False):
     fig.update(layout_showlegend=keep_2d_legend)
 
     return(fig)
+

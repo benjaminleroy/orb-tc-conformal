@@ -40,6 +40,8 @@ from .orb_group_functions import get_orb_files, collect_size_df, collect_rad_df,
 
 from .simulate import simulate
 
+from .conformal_prediction import simulation_based_conformal
+
 
 
 # loading in data --------

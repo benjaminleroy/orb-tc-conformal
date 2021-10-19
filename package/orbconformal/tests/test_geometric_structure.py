@@ -75,3 +75,94 @@ def test_calc_small_ball_rad_multidim_func():
                                                  pd_vec_s2)
     assert np.all(r_vec_s2 == np.array([0,5,3,3,3])), \
         "static test 2 failed."
+
+def test_when_contained():
+    """
+    test when_contained
+    """
+    z1 = np.array([
+        [8.83,8.89,8.81,8.87,8.9,8.87],
+        [8.89,8.94,8.85,8.94,8.96,8.92],
+        [8.84,8.9,8.82,8.92,8.93,8.91],
+        [8.79,8.85,8.79,8.9,8.94,8.92],
+        [8.79,8.88,8.81,8.9,8.95,8.92],
+        [8.8,8.82,8.78,8.91,8.94,8.92],
+        [8.75,8.78,8.77,8.91,8.95,8.92],
+        [8.8,8.8,8.77,8.91,8.95,8.94],
+        [8.74,8.81,8.76,8.93,8.98,8.99],
+        [8.89,8.99,8.92,9.1,9.13,9.11],
+        [8.97,8.97,8.91,9.09,9.11,9.11],
+        [9.04,9.08,9.05,9.25,9.28,9.27],
+        [9,9.01,9,9.2,9.23,9.2],
+        [8.99,8.99,8.98,9.18,9.2,9.19],
+        [8.93,8.97,8.97,9.18,9.2,9.18]
+        ])
+
+
+    np.random.seed(2022)
+
+    shifts_vec2 = np.random.choice(np.random.uniform(size = 30)+ \
+                                       np.array([0]*15+[-2]*15),
+                                  replace = False, size = 30)
+
+    z_multi2 = np.concatenate([(z1+shifts_vec2[i]).reshape(1,z1.shape[0],
+                                                           z1.shape[1])
+                             for i in np.arange(shifts_vec2.shape[0])])
+
+    true_z = z1 + np.random.uniform(size=1)
+
+    pd_vec = np.arange(z_multi2.shape[0])/z_multi2.shape[0]
+
+    sbr = .3
+
+
+    assert oc.geometric_structure.when_contained(true_z,
+                           z_multi2,
+                           pd_vec,
+                           sbr,
+                           verbose=False) == 0, \
+        "true_z completely contained right away if within sims and very large sbr"
+
+    true_z2 = z1 - .2
+
+    assert oc.geometric_structure.when_contained(true_z2,
+                   z_multi2,
+                   pd_vec,
+                   sbr,
+                   verbose=False) > 0,\
+        "true_z can be quickly contained is sbr is large (but not inside the sims)"
+
+    true_z3 = z1 - .3
+
+    assert oc.geometric_structure.when_contained(true_z3,
+                   z_multi2,
+                   pd_vec,
+                   sbr,
+                   verbose=False) is np.inf,\
+        "true_z cannot be contained if outside sbr for all simulations"
+
+
+
+    # static test
+    almost_zero = np.zeros(z1.shape)
+    almost_zero[5,3] = 1
+
+    static_almost_zero_change = np.concatenate([
+        (z1 + i*almost_zero).reshape((1, z1.shape[0],z1.shape[1]))
+             for i in np.array([0,.5, 1, 2, 5])])
+
+    pd_vec_s = np.arange(5)
+
+    sbr_v = [.4,.8,1.1,2.1,2]
+    expected_when_contained = [4,3,2,1,1]
+
+    when_contained_list = list()
+    for sbr in sbr_v:
+        when_contained_list.append(oc.geometric_structure.when_contained(z1,
+                   static_almost_zero_change,
+                   pd_vec_s,
+                   sbr,
+                   verbose=False))
+
+    assert np.all(expected_when_contained == when_contained_list), \
+        "static containment incorrect"
